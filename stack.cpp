@@ -14,7 +14,6 @@ Status dtor (Stack *stack)
     return ERROR;
 
     free (stack -> data);
-    stack -> data = NULL;
 
     return SUCCESS;
 }

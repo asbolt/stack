@@ -3,7 +3,13 @@
 Status push (Stack *stack, int element)
 {
     if (error (*stack) != GOODSTACK)
-    return ERROR;
+        return ERROR;
+
+    if (element == -666)
+    {
+        printf ("bad value\n");
+        return ERROR;
+    }
 
     if (stack -> size >= stack -> capasity)
     {
