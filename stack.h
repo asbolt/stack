@@ -3,8 +3,6 @@
 
 #include "error.h"
 
-Status ctor(Stack *stack, int size);
-Status dtor (Stack *stack);
 Status extensionStack (Stack *stack);
 Status constrictionStack (Stack *stack);
 

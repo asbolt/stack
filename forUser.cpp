@@ -1,4 +1,5 @@
 #include "stack.h"
+#include "hash.h"
 
 Status push (Stack *stack, int element)
 {
@@ -40,6 +41,47 @@ Status pop (Stack *stack)
 
     if (error (*stack) != GOODSTACK)
     return ERROR;
+
+    return SUCCESS;
+}
+
+Status ctor (Stack *stack, int size)
+{
+    stack -> data = (int*)calloc(size, sizeof(int));
+    stack -> capasity = size;
+
+    return SUCCESS;
+}
+
+Status dtor (Stack *stack)
+{
+    if (error (*stack) != GOODSTACK)
+    return ERROR;
+
+    free (stack -> data);
+
+    return SUCCESS;
+}
+
+Status dump (Stack stack)
+{
+    if (error (stack) != GOODSTACK)
+    return ERROR;
+
+    printf ("Adress data: %p\n", stack.data);
+
+    printf ("Data: ");
+    for (int i = 0; i < stack.size; i++)
+    {
+        printf ("%d ", stack.data[i]);
+    }
+    printf ("\n");
+
+    printf ("Size: %d\n", stack.size);
+    printf ("Capasity: %d\n", stack.capasity);
+    printf ("Hash: %d", dataHash (&stack));
+
+    printf ("\n\n\n");
 
     return SUCCESS;
 }

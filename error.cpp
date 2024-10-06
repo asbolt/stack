@@ -1,28 +1,6 @@
 #include "error.h"
 #include "hash.h"
 
-Status dump (Stack stack)
-{
-    if (error (stack) != GOODSTACK)
-    return ERROR;
-
-    printf ("%p\n", stack.data);
-
-    for (int i = 0; i < stack.size; i++)
-    {
-        printf ("%d ", stack.data[i]);
-    }
-    printf ("\n");
-
-    printf ("%d\n", stack.size);
-    printf ("%d\n", stack.capasity);
-    printf ("%d", dataHash (&stack));
-
-    printf ("\n\n\n");
-
-    return SUCCESS;
-}
-
 Errors error (Stack stack)
 {
     if (&stack == NULL)

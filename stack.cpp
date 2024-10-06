@@ -1,23 +1,5 @@
 #include "stack.h"
 
-Status ctor (Stack *stack, int size)
-{
-    stack -> data = (int*)calloc(size, sizeof(int));
-    stack -> capasity = size;
-
-    return SUCCESS;
-}
-
-Status dtor (Stack *stack)
-{
-    if (error (*stack) != GOODSTACK)
-    return ERROR;
-
-    free (stack -> data);
-
-    return SUCCESS;
-}
-
 Status extensionStack (Stack *stack)
 {
     if (error (*stack) != GOODSTACK)
