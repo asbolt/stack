@@ -10,11 +10,6 @@ int main ()
     push (&stack, 2);
     push (&stack, 3);
 
-    pop (&stack);
-    pop (&stack);
-    pop (&stack);
-    pop (&stack);
-
     dump (stack);
 
     return 0;

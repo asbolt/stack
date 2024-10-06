@@ -1,4 +1,5 @@
 #include "error.h"
+#include "hash.h"
 
 Status dump (Stack stack)
 {
@@ -15,6 +16,7 @@ Status dump (Stack stack)
 
     printf ("%d\n", stack.size);
     printf ("%d\n", stack.capasity);
+    printf ("%d", dataHash (&stack));
 
     printf ("\n\n\n");
 
