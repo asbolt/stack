@@ -1,20 +1,20 @@
-#include "forUser.h"
+#include "stackUserInterface.h"
 
 int main ()
 {
     Stack stack = {};
 
-    ctor (&stack, 10);
+    stackCtor (&stack, 10, -666);
 
-    push (&stack, 10);
-    push (&stack, 20);
-    push (&stack, 30);
+    stackPush (&stack, 10);
+    stackPush (&stack, 20);
+    stackPush (&stack, 30);
+    
+    stackPop (&stack);
 
-    pop (&stack);
+    stackDump (&stack);
 
-    dump (stack);
-
-    dtor (&stack);
+    stackDtor (&stack);
 
     return 0;
 }
