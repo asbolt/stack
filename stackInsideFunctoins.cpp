@@ -37,7 +37,7 @@ int dataHash (stackElementType *array, int arraySize)
 
     for (int numberElement = 0, degree = 1; numberElement < arraySize - 1; numberElement++, degree = degree * NUMBER_FOR_CALCULATION_HASH)
     {
-        hash += (int)array[numberElement + 1]*degree;
+        hash += (char)array[numberElement + 1]*degree;
     }
 
     return hash;
