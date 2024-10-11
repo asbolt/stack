@@ -1,19 +1,19 @@
 #include "stackInsideFunctoins.h"
 #include "stackUserInterface.h"
 
-int stackPush (Stack *stack, stackElementType element)
+StackErrors stackPush (Stack *stack, stackElementType element, int line, const char* function, const char* file)
 {
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
     if (element == stack->poisonValue)
     {
         printf ("bad value\n");
-        return false;
+        return STACK_BAD_ELEMENT;
     }
 
     if (stack->size >= stack->capacity - SPACE_FOR_CANARIES)
     {
-        stackExtend (stack);
+        stackExtend (stack, line, function, file);
         GIVE_VALUES_FOR_CANARIES(stack);
     }
 
@@ -22,62 +22,68 @@ int stackPush (Stack *stack, stackElementType element)
 
     stack->hash = dataHash ((stack->data), stack->size);
 
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
-    return true;
+    return STACK_GOOD;
 }
 
-int stackPop (Stack *stack)
+StackErrors stackPop (Stack *stack, int line, const char* function, const char* file)
 {
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
     stack->data[stack->size] = stack->poisonValue;
     (stack->size)--;
 
     if (stack->size < (stack->capacity)/4)
     {
-        stackReduce (stack);
+        stackReduce (stack, line, function, file);
         GIVE_VALUES_FOR_CANARIES(stack);
     }
 
     stack->hash = dataHash ((stack->data), stack->size);
 
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
-    return true;
+    return STACK_GOOD;
 }
 
-int stackCtor (Stack *stack, stackElementType size, stackElementType poisonValue)
+StackErrors stackCtor (Stack *stack, stackElementType size)
 {
     stack->data = (stackElementType*)calloc(size + SPACE_FOR_CANARIES, sizeof(stackElementType));
     if (stack->data == NULL)
-        return false;
+        return STACK_DATA_NULL;
 
     stack->capacity = size;
-    stack->poisonValue = poisonValue;
 
     GIVE_VALUES_FOR_CANARIES(stack);
 
     stack->hash = dataHash ((stack->data), stack->size);
+    stack->poisonValue = POISON_VALUE;
+    stack->startCanary = CANARY_VALUE;
+    stack->endCanary = CANARY_VALUE;
+    stack->stackError = STACK_GOOD;
 
-    return true;
+    return STACK_GOOD;
 }
 
-int stackDtor (Stack *stack)
+StackErrors stackDtor (Stack *stack, int line, const char* function, const char* file)
 {
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
     free (stack->data);
     stack->data = NULL;
 
-    return true;
+    return STACK_GOOD;
 }
 
-int stackDump (Stack *stack)
+StackErrors stackDump (Stack *stack)
 {
-    STACK_CHECK(stack);
-
-    printf ("Address data: %p\n", stack->data);
+    if (stack->data == NULL)
+    {
+        printf ("Address data: NULL");
+    } else {
+        printf ("Address data: %p\n", stack->data);
+    }
 
     printf ("Data: ");
     for (int i = 0; i < stack->size; i++)
@@ -93,5 +99,5 @@ int stackDump (Stack *stack)
 
     printf ("\n\n\n");
 
-    return true;
+    return STACK_GOOD;
 }

@@ -1,12 +1,12 @@
 #include "stackInsideFunctoins.h"
 
-int stackExtend (Stack *stack)
+StackErrors stackExtend (Stack *stack, int line, const char* function, const char* file)
 {
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
     stack->data = (stackElementType*)realloc (stack->data, (stack->capacity) * sizeof(stackElementType) * EXTEND_NUMBER + SPACE_FOR_CANARIES);
     if (stack->data == NULL)
-        return false;
+        return STACK_DATA_NULL;
     
     stack->capacity = (stack->capacity) * EXTEND_NUMBER;
 
@@ -15,20 +15,20 @@ int stackExtend (Stack *stack)
         stack->data[i+1] = stack->poisonValue;
     }
 
-    return true;
+    return STACK_GOOD;
 }
 
-int stackReduce (Stack *stack)
+StackErrors stackReduce (Stack *stack, int line, const char* function, const char* file)
 {
-    STACK_CHECK(stack);
+    STACK_CHECK(stack, line, function, file);
 
-    stack->data = (stackElementType*)realloc (stack->data, (stack->capacity) * sizeof(stackElementType) / 4 + SPACE_FOR_CANARIES);
+    stack->data = (stackElementType*)realloc (stack->data, (stack->capacity) * sizeof(stackElementType) / REDUCE_NUMBER + SPACE_FOR_CANARIES);
     if (stack->data == NULL)
-        return false;
+        return STACK_DATA_NULL;
 
-    stack->capacity = (stack->capacity) / 2;
+    stack->capacity = (stack->capacity) / REDUCE_NUMBER;
 
-    return true;
+    return STACK_GOOD;
 }
 
 int dataHash (stackElementType *array, int arraySize)

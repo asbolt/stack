@@ -4,10 +4,10 @@
 #include "stackInsideFunctoins.h"
 #include "stack.h"
 
-int stackPush (Stack *stack, stackElementType element);
-int stackPop (Stack *stack);
-int stackCtor (Stack *stack, stackElementType size, stackElementType poisonValue);
-int stackDtor (Stack *stack);
-int stackDump (Stack *stack);
+StackErrors stackPush (Stack *stack, stackElementType element, int line, const char* function, const char* file);
+StackErrors stackPop (Stack *stack, int line, const char* function, const char* file);
+StackErrors stackCtor (Stack *stack, stackElementType size);
+StackErrors stackDtor (Stack *stack, int line, const char* function, const char* file);
+StackErrors stackDump (Stack *stack);
 
 #endif

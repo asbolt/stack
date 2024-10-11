@@ -3,15 +3,15 @@
 
 #include "stack.h"
 
-#define STACK_CHECK(stack) do { \
+#define STACK_CHECK(stack, line, function, file) do { \
     if (stackCheckForError (stack) != STACK_GOOD)\
         {\
-            stackPrintError (stack);\
-            assert (0);\
+            stackPrintError (stack, line, function, file);\
+            return stack->stackError;\
         }\
   } while(0)
 
 StackErrors stackCheckForError (Stack *stack);
-int stackPrintError (Stack *stack);
+StackErrors stackPrintError (Stack *stack, int line, const char* function, const char* file);
 
 #endif

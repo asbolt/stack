@@ -6,8 +6,8 @@
 
 #define NUMBER_FOR_CALCULATION_HASH 2
 
-int stackExtend (Stack *stack);
-int stackReduce (Stack *stack);
+StackErrors stackExtend (Stack *stack, int line, const char* function, const char* file);
+StackErrors stackReduce (Stack *stack, int line, const char* function, const char* file);
 int dataHash (int *array, int arraySize);
 
 #endif

@@ -3,7 +3,10 @@
 
 StackErrors stackCheckForError (Stack *stack)
 {
-    if (stack->data[0] != CANARY_VALUE || stack->data[stack->capacity - 1] != CANARY_VALUE) {
+    if (stack == NULL)
+    {
+        return STACK_NULL;
+    } else if (stack->data[0] != CANARY_VALUE || stack->data[stack->capacity - 1] != CANARY_VALUE) {
         return STACK_BAD_CANARY;
 
     } else if (stack->data == NULL)
@@ -34,7 +37,7 @@ StackErrors stackCheckForError (Stack *stack)
     return STACK_GOOD;
 }
 
-int stackPrintError (Stack *stack)
+StackErrors stackPrintError (Stack *stack, int line, const char* function, const char* file)
 {
     switch (stack->stackError)
     {
@@ -69,5 +72,7 @@ int stackPrintError (Stack *stack)
         break;
     }
 
-    return true;
+    printf ("in file %s:%d (function %s)", file, line, function);
+
+    return stack->stackError;
 }
