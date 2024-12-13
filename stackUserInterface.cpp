@@ -1,4 +1,3 @@
-#include "stackInsideFunctoins.h"
 #include "stackUserInterface.h"
 
 StackErrors stackPush (Stack *stack, stackElementType element, int line, const char* function, const char* file)
@@ -11,16 +10,17 @@ StackErrors stackPush (Stack *stack, stackElementType element, int line, const c
         return STACK_BAD_ELEMENT;
     }
 
+    (stack->size)++;
+
     if (stack->size >= stack->capacity - SPACE_FOR_CANARIES)
     {
         stackExtend (stack, line, function, file);
         GIVE_VALUES_FOR_CANARIES(stack);
     }
 
-    stack->data[stack->size + 1] = element;
-    (stack->size)++;
+    stack->data[stack->size] = element;
 
-    stack->hash = dataHash ((stack->data), stack->size);
+    stack->hash = dataHash (stack->data, stack->size);
 
     STACK_CHECK(stack, line, function, file);
 
@@ -34,7 +34,7 @@ StackErrors stackPop (Stack *stack, int line, const char* function, const char* 
     stack->data[stack->size] = stack->poisonValue;
     (stack->size)--;
 
-    if (stack->size < (stack->capacity)/4)
+    if (stack->size < (stack->capacity) / 4) 
     {
         stackReduce (stack, line, function, file);
         GIVE_VALUES_FOR_CANARIES(stack);
@@ -47,31 +47,35 @@ StackErrors stackPop (Stack *stack, int line, const char* function, const char* 
     return STACK_GOOD;
 }
 
-StackErrors stackCtor (Stack *stack, stackElementType size)
+Stack *stackCtor (stackElementType size)
 {
+    Stack *stack = (Stack *)calloc (1, sizeof(Stack *));
+    if (stack == NULL)
+        return NULL;
+
     stack->data = (stackElementType*)calloc(size + SPACE_FOR_CANARIES, sizeof(stackElementType));
     if (stack->data == NULL)
-        return STACK_DATA_NULL;
+        return NULL;
 
     stack->capacity = size;
 
-    GIVE_VALUES_FOR_CANARIES(stack);
+    stack->data[0] = CANARY_VALUE;
+    stack->data[stack->capacity - ONE_CANARY] = CANARY_VALUE;
 
     stack->hash = dataHash ((stack->data), stack->size);
     stack->poisonValue = POISON_VALUE;
     stack->startCanary = CANARY_VALUE;
     stack->endCanary = CANARY_VALUE;
-    stack->stackError = STACK_GOOD;
 
-    return STACK_GOOD;
+    return stack;
 }
 
 StackErrors stackDtor (Stack *stack, int line, const char* function, const char* file)
 {
     STACK_CHECK(stack, line, function, file);
 
-    free (stack->data);
-    stack->data = NULL;
+    free (stack);
+    stack = NULL;
 
     return STACK_GOOD;
 }
@@ -79,23 +83,24 @@ StackErrors stackDtor (Stack *stack, int line, const char* function, const char*
 StackErrors stackDump (Stack *stack)
 {
     if (stack->data == NULL)
-    {
         printf ("Address data: NULL");
-    } else {
-        printf ("Address data: %p\n", stack->data);
-    }
-
-    printf ("Data: ");
-    for (int i = 0; i < stack->size; i++)
+    else 
     {
-        printf ("%d ", stack->data[i + 1]);
+        printf ("Address data: %p\n", stack->data);
+        printf ("Data: ");
+        for (int i = 1; i <= stack->size; i++)
+        {
+            printf ("%d ", stack->data[i]);
+        }
+        printf ("\n");
     }
-    printf ("\n");
 
     printf ("Size: %d\n", stack->size);
     printf ("Capacity: %d\n", stack->capacity);
     printf ("Poison value: %d\n", stack->poisonValue);
     printf ("Hash: %d\n", stack->hash);
+    printf ("First canary: %d\n", stack->data[0]);
+    printf ("Second canary: %d\n", stack->data[stack->capacity - ONE_CANARY]);
 
     printf ("\n\n\n");
 

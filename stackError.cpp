@@ -4,34 +4,22 @@
 StackErrors stackCheckForError (Stack *stack)
 {
     if (stack == NULL)
-    {
         return STACK_NULL;
-    } else if (stack->data[0] != CANARY_VALUE || stack->data[stack->capacity - 1] != CANARY_VALUE) {
+    else if (stack->data[0] != CANARY_VALUE || stack->data[stack->capacity - ONE_CANARY] != CANARY_VALUE)
         return STACK_BAD_CANARY;
-
-    } else if (stack->data == NULL)
-    {
+    else if (stack->data == NULL)
         return STACK_DATA_NULL;
-
-    } else if (stack->size < 0)
-    {
+    else if (stack->size < 0)
         return STACK_BAD_SIZE;
-
-    } else if (stack->capacity < 0)
-    {
+    else if (stack->capacity < 0)
         return STACK_BAD_CAPACITY;
-    } else 
-    if (stack->size > stack->capacity)
-    {
+    else if (stack->size > stack->capacity)
         return STACK_CAPACITY_LESS_THEN_SIZE;
-    }
 
     for (int i = 0; i < stack->size; i++)
     {
         if (stack->data[i+1] == stack->poisonValue)
-        {
             return STACK_BAD_ELEMENT;
-        }
     }
 
     return STACK_GOOD;
@@ -72,7 +60,7 @@ StackErrors stackPrintError (Stack *stack, int line, const char* function, const
         break;
     }
 
-    printf ("in file %s:%d (function %s)", file, line, function);
+    printf (" in file %s:%d (function %s)\n", file, line, function);
 
     return stack->stackError;
 }

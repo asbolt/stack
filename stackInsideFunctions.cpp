@@ -1,4 +1,4 @@
-#include "stackInsideFunctoins.h"
+#include "stackInsideFunctions.h"
 
 StackErrors stackExtend (Stack *stack, int line, const char* function, const char* file)
 {
@@ -10,7 +10,7 @@ StackErrors stackExtend (Stack *stack, int line, const char* function, const cha
     
     stack->capacity = (stack->capacity) * EXTEND_NUMBER;
 
-    for (int i = stack->size; i < stack->capacity - 1; i++)
+    for (int i = stack->size; i < stack->capacity - ONE_CANARY; i++)
     {
         stack->data[i+1] = stack->poisonValue;
     }
@@ -33,11 +33,11 @@ StackErrors stackReduce (Stack *stack, int line, const char* function, const cha
 
 int dataHash (stackElementType *array, int arraySize)
 {
-    long long int hash = 0;
+    int hash = 0;
 
-    for (int numberElement = 0, degree = 1; numberElement < arraySize - 1; numberElement++, degree = degree * NUMBER_FOR_CALCULATION_HASH)
+    for (int numberElement = 1; numberElement <= arraySize; numberElement++)
     {
-        hash += (char)array[numberElement + 1]*degree;
+        hash += array[numberElement];
     }
 
     return hash;

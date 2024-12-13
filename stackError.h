@@ -6,6 +6,7 @@
 #define STACK_CHECK(stack, line, function, file) do { \
     if (stackCheckForError (stack) != STACK_GOOD)\
         {\
+            stack->stackError = stackCheckForError (stack);\
             stackPrintError (stack, line, function, file);\
             return stack->stackError;\
         }\
