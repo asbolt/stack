@@ -4,7 +4,7 @@ StackErrors stackExtend (Stack *stack, int line, const char* function, const cha
 {
     STACK_CHECK(stack, line, function, file);
 
-    stack->data = (stackElementType*)realloc (stack->data, (stack->capacity) * sizeof(stackElementType) * EXTEND_NUMBER + SPACE_FOR_CANARIES);
+    stack->data = (stackElementType *) realloc (stack->data, (stack->capacity) * EXTEND_NUMBER * sizeof(stackElementType) + SPACE_FOR_CANARIES);
     if (stack->data == NULL)
         return STACK_DATA_NULL;
     
@@ -12,7 +12,7 @@ StackErrors stackExtend (Stack *stack, int line, const char* function, const cha
 
     for (int i = stack->size; i < stack->capacity - ONE_CANARY; i++)
     {
-        stack->data[i+1] = stack->poisonValue;
+        stack->data[i] = stack->poisonValue;
     }
 
     return STACK_GOOD;

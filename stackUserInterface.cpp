@@ -12,7 +12,7 @@ StackErrors stackPush (Stack *stack, stackElementType element, int line, const c
 
     (stack->size)++;
 
-    if (stack->size >= stack->capacity - SPACE_FOR_CANARIES)
+    if (stack->size >= stack->capacity - ONE_CANARY)
     {
         stackExtend (stack, line, function, file);
         GIVE_VALUES_FOR_CANARIES(stack);
@@ -53,7 +53,7 @@ Stack *stackCtor (stackElementType size)
     if (stack == NULL)
         return NULL;
 
-    stack->data = (stackElementType*)calloc(size + SPACE_FOR_CANARIES, sizeof(stackElementType));
+    stack->data = (stackElementType *) calloc(size + SPACE_FOR_CANARIES, sizeof(stackElementType));
     if (stack->data == NULL)
         return NULL;
 

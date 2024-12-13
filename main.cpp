@@ -7,14 +7,12 @@ int main ()
     stackPush (stack, 10, VALUES_FOR_ERROR);
     stackPush (stack, 20, VALUES_FOR_ERROR);
     stackPush (stack, 30, VALUES_FOR_ERROR);
+    stackPush (stack, 10, VALUES_FOR_ERROR);
+    stackPush (stack, 20, VALUES_FOR_ERROR);
     
     stackPop (stack, VALUES_FOR_ERROR);
 
     stackDump (stack);
 
     stackDtor (stack, VALUES_FOR_ERROR);
-}
-
-// TODO fix hash
-// TODO second hash
-// TODO do mak for functions 
+} 
